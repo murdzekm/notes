@@ -21,7 +21,7 @@
                             <a class="btn btn-primary btn-sm px-3" href="<?= ROOT ?>notes/show/<?php echo $note->id  ?>">
                                 Szczegóły
                             </a>
-                            <a class="btn btn-danger btn-sm px-3" href="<?= ROOT ?>notes/show/<?php
+                            <a class="btn btn-danger btn-sm px-3" href="<?= ROOT ?>notes/show_delete/<?php
                             echo $note->id ;
                             ?>">
                                 <?php $data['type'] = "delete" ?>Usuń
