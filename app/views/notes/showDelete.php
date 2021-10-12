@@ -1,4 +1,5 @@
 <?php $this->view("layout/header", $data) ?>
+
 <div class="container m-lg-5">
     <?php $note = $data['note'] ?? null; ?>
     <?php if ($note) : ?>
@@ -17,9 +18,12 @@
             <span class="ms-4 ps-5 "><?php echo $note['created'] ?></span>
 
             <div class="pt-5">
-                <a class="btn btn-primary fw-bold" href="<?= ROOT ?>notes/edit/<?php echo $note['id'] ?>">
-                    Edytuj
-                </a>
+<!--                <form method="POST">-->
+                    <input name="id" type="hidden" value="<?php echo $note['id'] ?>"/>
+                    <a class="btn btn-danger" href="<?= ROOT."notes/delete/". $note['id'] ?>">
+                        Usuń
+                    </a>
+<!--            </form>-->
                 <?php else : ?>
                     Brak notatki do wyświetlenia
                 <?php endif; ?>
@@ -27,9 +31,8 @@
                     Powrót do listy notatek
                 </a>
             </div>
+
         </div>
     </div>
 </div>
-
 <?php $this->view("layout/footer", $data) ?>
-

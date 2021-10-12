@@ -5,7 +5,7 @@ class Signup extends Controller
     function index()
     {
         $data['page_title'] = "Signup";
-        if ($this->check_logged_in()) {
+        if ($this->checkLoggedIn()) {
             header("Location:" . ROOT . "notes");
             die;
         } else {

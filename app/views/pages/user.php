@@ -1,11 +1,16 @@
-<?php $this->view("layout/header", $data); ?>
+<?php $this->view("layout/header", $data) ?>
 
 <div class="row d-flex justify-content-center pt-3">
-    <div class="col-12 col-md-9 col-lg-6 col-xl-5">
+    <div class="col-12 col-md-8 col-lg-6">
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
+
+
+                <h2>Profil użytkownika</h2>
+                <!--    <p> --><? //= $_SESSION['user_name'] ?><!--</p>-->
                 <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                     <li class="nav-item" role="presentation">
+
                         <a
                                 class="nav-link active"
                                 id="tab-login"
@@ -14,7 +19,7 @@
                                 role="tab"
                                 aria-controls="pills-login"
                                 aria-selected="true"
-                        >Zaloguj</a
+                        >Ogólne</a
                         >
                     </li>
                     <li class="nav-item" role="presentation">
@@ -26,10 +31,12 @@
                                 role="tab"
                                 aria-controls="pills-register"
                                 aria-selected="false"
-                        >Rejestracja</a>
+                        >Zmiana hasła</a>
                     </li>
                 </ul>
+                <!-- Pills navs -->
 
+                <!-- Pills content -->
                 <div class="tab-content">
                     <div
                             class="tab-pane fade show active"
@@ -37,31 +44,32 @@
                             role="tabpanel"
                             aria-labelledby="tab-login"
                     >
+                        <?php if (!empty($data['user'])) : ?>
+                        <?php $user = $data['user']; ?>
                         <form method="post">
                             <div class="text-center mb-3">
-                                <h2>Zaloguj</h2>
+                                <h2>Ogólne</h2>
                             </div>
                             <p style="color: #dc003a"><?php checkMessage() ?></p>
+                            <input type="hidden" name="id" class="form-control ps-3" value="<?php echo $user['id'] ?>"/>
 
                             <div class="form-outline mb-4">
-                                <input type="text" name="login" class="form-control"/>
+                                <input type="text" name="login" class="form-control" value="<?= $user['login'] ?>"/>
                                 <label class="form-label">Login</label>
                             </div>
 
-                            <!-- Password input -->
                             <div class="form-outline mb-4">
-                                <input type="password" name="password" class="form-control"/>
-                                <label class="form-label">Hasło</label>
+                                <input type="text" name="username" class="form-control" value="<?= $user['username'] ?>"/>
+                                <label class="form-label">Nazwa użytkownika</label>
                             </div>
 
-
-                            <button type="submit" class="btn btn-primary btn-block mb-4">Zaloguj</button>
-
-
-                            <div class="text-center">
-                                <p>Nie posiadasz konta? <a href="<?= ROOT ?>signup">Zarejestruj się</a></p>
-
+                            <div class="form-outline mb-4">
+                                <input type="text" name="email" class="form-control" value="<?= $user['email'] ?>"/>
+                                <label class="form-label">Email</label>
                             </div>
+
+                            <button type="submit" class="btn btn-primary btn-block mb-4">Zapisz</button>
+
                         </form>
                     </div>
                     <div
@@ -72,51 +80,39 @@
                     >
                         <form method="post">
                             <div class="text-center mb-3">
-                                <h2>Rejestracja</h2>
+                                <h2>Zmiana hasła</h2>
                             </div>
 
-                            <div class="form-outline mb-4">
-                                <input type="text" name="login" class="form-control"/>
-                                <label class="form-label">Login</label>
-                            </div>
-
-                            <div class="form-outline mb-4">
-                                <input type="text" name="username" class="form-control"/>
-                                <label class="form-label">Nazwa użytkownika</label>
-                            </div>
-
-                            <div class="form-outline mb-4">
-                                <input type="email" name="email" class="form-control"/>
-                                <label class="form-label">Email</label>
-                            </div>
-
+                            <input type="hidden" name="id" class="form-control ps-3"
+                                   value="<?php echo $user['id'] ?>"/>
+                            <!-- Username input -->
                             <div class="form-outline mb-4">
                                 <input type="password" name="password" class="form-control"/>
-                                <label class="form-label">Hasło</label>
+                                <label class="form-label" for="registerUsername">Aktualne hasło</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" name="newPassword" class="form-control"/>
+                                <label class="form-label" for="registerEmail">Nowe hasło</label>
                             </div>
 
                             <div class="form-outline mb-4">
                                 <input type="password" name="repeatPassword" class="form-control"/>
-                                <label class="form-label">Powtórz hasło</label>
+                                <label class="form-label" for="registerPassword">Powtórz hasło</label>
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-block mb-3">Zarejestruj</button>
+                            <button type="submit" class="btn btn-primary btn-block mb-3">Zmień hasło</button>
                         </form>
                     </div>
+                    <a class="btn" href="<?= ROOT ?>notes">
+                        Powrót do listy notatek
+                    </a>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 
-<script>
-
-    $('.message a').click(function () {
-        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-    });
-</script>
-
-<?php $this->view("layout/footer", $data); ?>
-
+<?php $this->view("layout/footer", $data) ?>

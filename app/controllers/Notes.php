@@ -6,7 +6,7 @@ class Notes extends Controller
     {
         $data['page_title'] = "Notatki";
 
-        $this->check_loogin();
+        $this->checkLogin();
 
         $note = $this->loadModel("note");
         $data['notes'] = $note->lists();
@@ -19,7 +19,7 @@ class Notes extends Controller
     public function show($id)
     {
         $data['page_title'] = "Notatka";
-        $this->check_loogin();
+        $this->checkLogin();
         $note = $this->loadModel("note");
         $data['note'] = $note->show($id);
         $this->view("notes/show", $data);
@@ -28,7 +28,7 @@ class Notes extends Controller
     public function add()
     {
         $data['page_title'] = "Nowa notatka";
-        $this->check_loogin();
+        $this->checkLogin();
         $note = $this->loadModel("note");
         $data['note'] = $note->add($_POST);
         $this->view("notes/add", $data);
@@ -37,32 +37,28 @@ class Notes extends Controller
     public function edit($id)
     {
         $data['page_title'] = "Edycja notatki";
-        $this->check_loogin();
+        $this->checkLogin();
         $note = $this->loadModel("note");
         $data['note'] = $note->edit($_POST, $id);
 
         $this->view("notes/edit", $data);
     }
 
-    public function show_delete($id)
+    public function showDelete($id)
     {
         $data['page_title'] = "Usuń notatkę";
-        $this->check_loogin();
+        $this->checkLogin();
         $note = $this->loadModel("note");
         $data['note'] = $note->show($id);
 
-
-        $this->view("notes/show_delete", $data);
+        $this->view("notes/showDelete", $data);
     }
 
     public function delete($id)
     {
-
         $data['page_title'] = "Usuń notatkę";
-        $this->check_loogin();
+        $this->checkLogin();
         $note = $this->loadModel("note");
         $data['note'] = $note->delete($id);
-
-        //  $this->view("notes/delete", $data);
     }
 }

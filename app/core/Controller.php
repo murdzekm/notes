@@ -2,57 +2,50 @@
 
 class Controller
 {
-    protected function view($view,$data = [])
+    protected function view($view, $data = [])
     {
-        if(file_exists("../app/views/". $view .".php"))
-        {
-            include "../app/views/". $view .".php";
-        }else{
+        if (file_exists("../app/views/" . $view . ".php")) {
+            include "../app/views/" . $view . ".php";
+        } else {
             include "../app/views/404.php";
         }
     }
 
     protected function loadModel($model)
     {
-        if(file_exists("../app/models/". $model .".php"))
-        {
-            include "../app/models/". $model .".php";
+        if (file_exists("../app/models/" . $model . ".php")) {
+            include "../app/models/" . $model . ".php";
             return $model = new $model();
         }
 
         return false;
     }
 
-    protected function check_loogin()
+    protected function checkLogin()
     {
-       // $user = $this->loadModel("user");
-
-        if (!$result = $this->check_logged_in()) {
+        if (!$result = $this->checkLoggedIn()) {
             header("Location:" . ROOT . "login");
-           die;
+            die;
         }
     }
 
-    function check_logged_in()
+    function checkLoggedIn()
     {
-
         $DB = new Database();
-        if (isset($_SESSION['user_url'])) {
+        if (isset($_SESSION['url_address'])) {
 
-            $arr['user_url'] = $_SESSION['user_url'];
+            $arr['url_address'] = $_SESSION['url_address'];
+            $query = "select * from users where url_address = :url_address limit 1";
 
-            $query = "select * from users where url_address = :user_url limit 1";
-            $data = $DB->read($query, $arr);
+            $data = $DB->get($query, $arr);
+
             if (is_array($data)) {
-                //logged in
-                $_SESSION['user_name'] = $data[0]->username;
-                $_SESSION['user_url'] = $data[0]->url_address;
+                $_SESSION['username'] = $data['username'];
+                $_SESSION['url_address'] = $data['url_address'];
 
                 return true;
             }
         }
-
         return false;
-
     }
 }

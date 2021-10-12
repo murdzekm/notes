@@ -2,104 +2,167 @@
 
 class User
 {
+    public $DB;
 
-    function login($POST)
+    public function __construct()
     {
-        $DB = new Database();
+        $this->DB = new Database();
+    }
+
+    public function login($POST)
+    {
+        $DB = $this->DB;
 
         $_SESSION['error'] = "";
-        if (isset($POST['username']) && isset($POST['password'])) {
+        if (isset($POST['login']) && isset($POST['password'])) {
 
-            $arr['username'] = $POST['username'];
+            $arr['login'] = $POST['login'];
             $arr['password'] = hash("sha1", $POST['password']);
 
-            $query = "select * from users where username = :username && password = :password limit 1";
-            $data = $DB->read($query, $arr);
+            $query = "select * from users where login = :login && password = :password limit 1";
 
+            //$data = $DB->read($query, $arr);
+//            $params['params'] = "*";
+//            $params['table'] = "users";
+//            $params['where'] = "login = '" . $arr['login'] . "' && password = '" . $arr['password'] . "' limit 1";
+
+            $data = $DB->get($query, $arr);
 
             if (is_array($data)) {
                 //logged in
-                $_SESSION['user_name'] = $data[0]->username;
-                $_SESSION['user_url'] = $data[0]->url_address;
-
+                $_SESSION['username'] = $data['username'];
+                $_SESSION['url_address'] = $data['url_address'];
 
                 header("Location:" . ROOT . "notes");
                 die;
 
             } else {
 
-                $_SESSION['error'] = "wrong username or password";
+                $_SESSION['error'] = "Błędny login lub hasło";
             }
         } else {
 
-            $_SESSION['error'] = "please enter a valid username and password";
+            $_SESSION['error'] = "Proszę podać poprawną nazwę użytkownika i hasło";
         }
-
     }
 
-    function signup($POST)
+    public function signup($POST)
     {
-
-        $DB = new Database();
+        $DB = $this->DB;
 
         $_SESSION['error'] = "";
-        if (isset($POST['username']) && isset($POST['password'])) {
+        if (isset($POST['login']) && isset($POST['email'])) {
 
+            $arr['login'] = $POST['login'];
             $arr['username'] = $POST['username'];
             $arr['password'] = hash("sha1", $POST['password']);
             $arr['email'] = $POST['email'];
-            $arr['url_address'] = get_random_string_max(60);
+            $arr['url_address'] = getRandomStringMax(60);
             $arr['date'] = date("Y-m-d H:i:s");
 
-            echo '<pre>';
-            var_dump($arr);
-            echo '</pre>';
+            $query = "insert into users (login,username,password,email,url_address,date) values (:login, :username,:password,:email,:url_address,:date)";
 
-            $query = "insert into users (username,password,email,url_address,date) values (:username,:password,:email,:url_address,:date)";
-            $data = $DB->write($query, $arr);
+            $data = $DB->insert($query, $arr);
             if ($data) {
-
                 header("Location:" . ROOT . "login");
                 die;
             }
-
         } else {
-
             $_SESSION['error'] = "please enter a valid username and password";
         }
     }
 
-//    function check_logged_in()
-//    {
-//
-//        $DB = new Database();
-//        if (isset($_SESSION['user_url'])) {
-//
-//            $arr['user_url'] = $_SESSION['user_url'];
-//
-//            $query = "select * from users where url_address = :user_url limit 1";
-//            $data = $DB->read($query, $arr);
-//            if (is_array($data)) {
-//                //logged in
-//                $_SESSION['user_name'] = $data[0]->username;
-//                $_SESSION['user_url'] = $data[0]->url_address;
-//
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//
-//    }
 
-    function logout()
+    public function logout()
     {
-        //logged in
-        unset($_SESSION['user_name']);
-        unset($_SESSION['user_url']);
+        unset($_SESSION['username']);
+        unset($_SESSION['url_address']);
 
         header("Location:" . ROOT . "login");
         die;
+    }
+
+
+    public function show()
+    {
+        $DB = $this->DB;
+
+        $_SESSION['error'] = "";
+        $arr['url_address'] = $_SESSION['url_address'];
+
+        $query = "select * from users where url_address = :url_address limit 1";
+        $data = $DB->getAll($query, $arr);
+
+        if ($data) {
+            return $data[0];
+        }
+        return false;
+    }
+
+    public function changePassword($POST)
+    {
+        $DB = $this->DB;
+
+        $_SESSION['error'] = "";
+        if (isset($POST['password']) && isset($POST['newPassword'])) {
+            $arr['id'] = $POST['id'];
+            $arr['password'] = hash("sha1", $POST['password']);
+            $query = "select id, password from users where id=:id and password=:password";
+            $data = $DB->get($query, $arr);
+
+            if ($data) {
+                $arr['password'] = hash("sha1", $POST['newPassword']);
+
+                $query = "update users set password=:password where id=:id";
+
+                $data = $DB->edit($query, $arr);
+                if ($data) {
+                    return true;
+                } else {
+                    $_SESSION['error'] = "Nie udało się zminić hasła";
+                    return false;
+                }
+            } else {
+                $_SESSION['error'] = "błędne hasło";
+            }
+        } else {
+            $_SESSION['error'] = "błędny odczyt";
+        }
+    }
+
+    public function changeUser($POST)
+    {
+        $DB = $this->DB;
+
+        if (isset($POST['username']) && isset($POST['login']) && isset($POST['email'])) {
+            $arr['id'] = $POST['id'];
+            $arr['login'] = $POST['login'];
+            $arr['username'] = $POST['username'];
+            $arr['email'] = $POST['email'];
+
+            //$query = "update notes set title= :title, description = :description,created =:created where id=:id";
+            $query = "update users set login=:login, username=:username, email=:email where id=:id";
+            $data = $DB->edit($query, $arr);
+            if ($data) {
+                $_SESSION['error'] = "Dane zostało zmienione";
+                header("Location:" . ROOT . "users");
+
+            } else {
+                $_SESSION['error'] = "Nie udało się zminić danych konta";
+            }
+
+        }elseif(!isset($POST['login'])){
+            $_SESSION['error'] = "Login nie został ustawiony";
+
+        }elseif(!isset($POST['username'])) {
+            $_SESSION['error'] = "Nazwa użytkownika nie została ustawiona";
+        }
+        elseif(!isset($POST['email'])) {
+            $_SESSION['error'] = "Email nie został ustawiony";
+
+        }
+
+
     }
 
 

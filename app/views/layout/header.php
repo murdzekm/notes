@@ -14,14 +14,11 @@
             integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
             crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/fe02db7a73.js" crossorigin="anonymous"></script>
-
 </head>
 <body>
-<!-- PREMIUM FEATURES BUTTON -->
 <div class="container mb-8">
     <!-- HEADER -->
-    <!--    <header role="banner" class="position-absolute margin-top-30 margin-m-top-0 margin-s-top-0">-->
-    <!-- Top Navigation -->
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="<?= ROOT ?>"><i class="fas fa-clipboard"></i></a>
@@ -39,12 +36,12 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav mx-2 my-2 my-lg-0">
-                    <?php if (!isset($_SESSION['user_name'])): ?>
+                    <?php if (!isset($_SESSION['username']) && !isset($_SESSION['url_address'])): ?>
                         <li><a class="nav-link active" aria-current="page" href="<?= ROOT ?>login">Zaloguj</a></li>
                         <li><a class="nav-link active" aria-current="page" href="<?= ROOT ?>signup">Rejestracja</a></li>
                     <?php else: ?>
-                        <li><a class="nav-link active"><?php if (isset($_SESSION['user_name'])): ?>
-                                    Witaj <?= $_SESSION['user_name'] ?>!
+                        <li><a href="<?= ROOT ?>users"" class="nav-link active"><?php if (isset($_SESSION['username']) && isset($_SESSION['url_address'])): ?>
+                                    Witaj <?= $_SESSION['username'] ?>!
                                 <?php endif; ?></a></li>
                         <li><a class="nav-link active" aria-current="page"  href="<?= ROOT ?>logout">Wyloguj</a></li>
                     <?php endif; ?>
@@ -52,6 +49,4 @@
             </div>
         </div>
     </nav>
-
-
     <!--    </header>-->

@@ -5,7 +5,7 @@ class Home extends Controller
     public function index()
     {
         $data['page_title'] = "Home";
-        $login = $this->check_logged_in();
+        $login = $this->checkLoggedIn();
         if ($login) {
             header("Location:" . ROOT . "notes");
         } else {
