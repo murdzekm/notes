@@ -19,13 +19,7 @@ class User
             $arr['login'] = $POST['login'];
             $arr['password'] = hash("sha1", $POST['password']);
 
-            $query = "select * from users where login = :login && password = :password limit 1";
-
-            //$data = $DB->read($query, $arr);
-//            $params['params'] = "*";
-//            $params['table'] = "users";
-//            $params['where'] = "login = '" . $arr['login'] . "' && password = '" . $arr['password'] . "' limit 1";
-
+            $query = "select * from users where login =:login && password = :password limit 1";
             $data = $DB->get($query, $arr);
 
             if (is_array($data)) {
@@ -83,6 +77,39 @@ class User
     }
 
 
+    public function checkUser($POST)
+    {
+        $DB = $this->DB;
+
+        $_SESSION['error'] = "";
+        $arr['login'] = $POST['login'];
+
+        $query = "select * from users where login=:login limit 1";
+        $data = $DB->get($query, $arr);
+
+        if ($data) {
+            return false;
+        }
+        return true;
+    }
+
+    public function checkEmail($POST)
+    {
+        $DB = $this->DB;
+
+        $_SESSION['error'] = "";
+        $arr['email'] = $POST['email'];
+        {
+            $query = "select * from users where email=:email limit 1";
+            $data = $DB->get($query, $arr);
+            if ($data) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     public function show()
     {
         $DB = $this->DB;
@@ -99,13 +126,13 @@ class User
         return false;
     }
 
-    public function changePassword($POST)
+    public function changePassword($id, $POST)
     {
         $DB = $this->DB;
 
         $_SESSION['error'] = "";
         if (isset($POST['password']) && isset($POST['newPassword'])) {
-            $arr['id'] = $POST['id'];
+            $arr['id'] = $id;
             $arr['password'] = hash("sha1", $POST['password']);
             $query = "select id, password from users where id=:id and password=:password";
             $data = $DB->get($query, $arr);
@@ -123,41 +150,39 @@ class User
                     return false;
                 }
             } else {
-                $_SESSION['error'] = "błędne hasło";
+                $_SESSION['error'] = "Błędne hasło";
             }
         } else {
             $_SESSION['error'] = "błędny odczyt";
         }
     }
 
-    public function changeUser($POST)
+    public function changeUser($id, $POST)
     {
         $DB = $this->DB;
 
         if (isset($POST['username']) && isset($POST['login']) && isset($POST['email'])) {
-            $arr['id'] = $POST['id'];
+            $arr['id'] = $id;
             $arr['login'] = $POST['login'];
             $arr['username'] = $POST['username'];
             $arr['email'] = $POST['email'];
 
-            //$query = "update notes set title= :title, description = :description,created =:created where id=:id";
             $query = "update users set login=:login, username=:username, email=:email where id=:id";
             $data = $DB->edit($query, $arr);
             if ($data) {
-                $_SESSION['error'] = "Dane zostało zmienione";
+                $_SESSION['error'] = "Dane zostały zmienione";
                 header("Location:" . ROOT . "users");
 
             } else {
                 $_SESSION['error'] = "Nie udało się zminić danych konta";
             }
 
-        }elseif(!isset($POST['login'])){
+        } elseif (!isset($POST['login'])) {
             $_SESSION['error'] = "Login nie został ustawiony";
 
-        }elseif(!isset($POST['username'])) {
+        } elseif (!isset($POST['username'])) {
             $_SESSION['error'] = "Nazwa użytkownika nie została ustawiona";
-        }
-        elseif(!isset($POST['email'])) {
+        } elseif (!isset($POST['email'])) {
             $_SESSION['error'] = "Email nie został ustawiony";
 
         }

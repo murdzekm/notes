@@ -9,7 +9,7 @@ class Home extends Controller
         if ($login) {
             header("Location:" . ROOT . "notes");
         } else {
-            $this->view("pages/Home", $data);
+            $this->view("pages/home", $data);
         }
 
     }

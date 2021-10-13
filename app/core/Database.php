@@ -2,78 +2,6 @@
 
 class Database
 {
-    public function dbConnect()
-    {
-
-        try {
-
-            $string = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";";
-            $db = new PDO($string, DB_USER, DB_PASS);
-            return $db;
-
-        } catch (PDOExecption $e) {
-
-            die($e->getMessage());
-        }
-    }
-
-    public function read($query, $data = [])
-    {
-
-        $DB = $this->dbConnect();
-        $stm = $DB->prepare($query);
-
-
-        if (count($data) == 0) {
-            $stm = $DB->query($query);
-            $check = 0;
-            if ($stm) {
-                $check = 1;
-            }
-        } else {
-            $check = $stm->execute($data);
-        }
-
-        if ($check) {
-            $data = $stm->fetchAll(PDO::FETCH_OBJ);
-
-            if (is_array($data) && count($data) > 0) {
-
-                return $data;
-            }
-
-            return false;
-        } else {
-            return false;
-        }
-    }
-
-    public function write($query, $data = [])
-    {
-
-        $DB = $this->dbConnect();
-        $stm = $DB->prepare($query);
-
-        if (count($data) == 0) {
-            $stm = $DB->query($query);
-            $check = 0;
-            if ($stm) {
-                $check = 1;
-            }
-        } else {
-
-            $check = $stm->execute($data);
-
-        }
-
-        if ($check) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
     public $error = "";
     private $pdo = null;
     private $stmt = null;
@@ -93,7 +21,6 @@ class Database
         }
     }
 
-    // (B) CLOSE CONNECTION
     function __destruct()
     {
         if ($this->stmt !== null) {
@@ -104,13 +31,12 @@ class Database
         }
     }
 
-    // (C) RUN A SELECT QUERY
-    public function getAll($sql, $data = [])
+    public function getAll($sql, $arr = [])
     {
         $result = false;
         try {
             $this->stmt = $this->pdo->prepare($sql);
-            $this->stmt->execute($data);
+            $this->stmt->execute($arr);
             $result = $this->stmt->fetchAll();
             return $result;
 
@@ -181,6 +107,5 @@ class Database
             return false;
         }
     }
-
 
 }

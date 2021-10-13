@@ -5,7 +5,6 @@ class Notes extends Controller
     public function index()
     {
         $data['page_title'] = "Notatki";
-
         $this->checkLogin();
 
         $note = $this->loadModel("note");

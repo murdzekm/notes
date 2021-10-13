@@ -18,12 +18,10 @@
             <span class="ms-4 ps-5 "><?php echo $note['created'] ?></span>
 
             <div class="pt-5">
-<!--                <form method="POST">-->
                     <input name="id" type="hidden" value="<?php echo $note['id'] ?>"/>
                     <a class="btn btn-danger" href="<?= ROOT."notes/delete/". $note['id'] ?>">
                         Usuń
                     </a>
-<!--            </form>-->
                 <?php else : ?>
                     Brak notatki do wyświetlenia
                 <?php endif; ?>
@@ -31,7 +29,6 @@
                     Powrót do listy notatek
                 </a>
             </div>
-
         </div>
     </div>
 </div>

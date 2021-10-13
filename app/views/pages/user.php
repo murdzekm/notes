@@ -5,9 +5,7 @@
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
 
-
                 <h2>Profil użytkownika</h2>
-                <!--    <p> --><? //= $_SESSION['user_name'] ?><!--</p>-->
                 <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                     <li class="nav-item" role="presentation">
 
@@ -34,9 +32,6 @@
                         >Zmiana hasła</a>
                     </li>
                 </ul>
-                <!-- Pills navs -->
-
-                <!-- Pills content -->
                 <div class="tab-content">
                     <div
                             class="tab-pane fade show active"
@@ -51,7 +46,6 @@
                                 <h2>Ogólne</h2>
                             </div>
                             <p style="color: #dc003a"><?php checkMessage() ?></p>
-                            <input type="hidden" name="id" class="form-control ps-3" value="<?php echo $user['id'] ?>"/>
 
                             <div class="form-outline mb-4">
                                 <input type="text" name="login" class="form-control" value="<?= $user['login'] ?>"/>
@@ -83,8 +77,6 @@
                                 <h2>Zmiana hasła</h2>
                             </div>
 
-                            <input type="hidden" name="id" class="form-control ps-3"
-                                   value="<?php echo $user['id'] ?>"/>
                             <!-- Username input -->
                             <div class="form-outline mb-4">
                                 <input type="password" name="password" class="form-control"/>

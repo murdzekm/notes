@@ -1,14 +1,9 @@
 <?php $this->view("layout/header", $data) ?>
 
-
 <div class="row d-flex justify-content-center mt-3">
     <div class="col-12 col-xl-7">
         <div class="card shadow-2-strong" style="border-radius: 1rem;">
             <div class="card-body p-5 text-center">
-
-                <!-- Pills navs -->
-
-                <!-- Pills content -->
 
                 <?php if (!empty($data['note'])) : ?>
                     <?php $note = $data['note']; ?>

@@ -8,7 +8,6 @@ class App
 
     public function __construct()
     {
-
         $url = $this->getURL();
         if (file_exists("../app/controllers/" . ucwords($url[0]) . ".php")) {
             $this->controller = ucwords($url[0]);
@@ -25,7 +24,6 @@ class App
             }
         }
 
-        //run the class and method
         $this->params = array_values($url);
         call_user_func_array([$this->controller, $this->method], $this->params);
     }

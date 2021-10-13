@@ -8,20 +8,20 @@ class Login extends Controller
         if ($this->checkLoggedIn()) {
             header("Location:" . ROOT . "notes");
             die;
-        } else {
-            if (isset($_POST['email']) && $_POST['repeatPassword']) {
-                $user = $this->loadModel("user");
+        } elseif (isset($_POST['email']) && isset($_POST['repeatPassword'])) {
+            $user = $this->loadModel("user");
+            if ($user->checkUser($_POST) && $user->checkEmail($_POST)) {
                 $user->signup($_POST);
-
-            } elseif (isset($_POST['login']) && !isset($_POST['email'])) {
-
-
-                $user = $this->loadModel("user");
-                $user->login($_POST);
-
+            } else {
+                $_SESSION['error'] = "Podany login jest już zajęty";
             }
 
-            $this->view("pages/login", $data);
+        } elseif (isset($_POST['login']) && !isset($_POST['email'])) {
+            $user = $this->loadModel("user");
+            $user->login($_POST);
         }
+
+        $this->view("pages/login", $data);
     }
+
 }

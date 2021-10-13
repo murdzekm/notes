@@ -9,12 +9,8 @@
                 <p>
                     Aplkacja pozwala na zapisywanie własnych notatek. Możesz je dodawać, edytować i usuwać.
                 </p>
-
-            </dl>
+            </div>
         </div>
     </div>
-
 </div>
-
-<!---->
 <?php $this->view("layout/footer", $data) ?>

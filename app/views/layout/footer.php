@@ -1,6 +1,5 @@
 </div>
 <footer class="text-center text-white fixed-bottom p-2 mt-5">
-    <!--    <div class="navbar navbar-default navbar-fixed-bottom">-->
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -9,7 +8,7 @@
             </div>
         </div>
     </div>
-    <!--    </div>-->
+
 </footer>
 <script type="text/javascript" src="<?= ASSETS ?>js/mdb.min.js"></script>
 

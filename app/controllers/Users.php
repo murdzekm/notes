@@ -9,12 +9,13 @@ class Users extends Controller
 
         $user = $this->loadModel("user");
         $data['user'] = $user->show();
+        $id = $data['user']['id'];
 
         if (isset($_POST['password']) && isset($_POST['newPassword']) && isset($_POST['repeatPassword'])) {
-            $user->changePassword($_POST);
+            $user->changePassword($id, $_POST);
 
         } elseif (isset($_POST['username']) && !isset($_POST['password']) && !isset($_POST['newPassword'])) {
-            $user->changeUser($_POST);
+            $user->changeUser($id, $_POST);
         }
 
         $this->view("pages/user", $data);
