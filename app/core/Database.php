@@ -17,7 +17,9 @@ class Database
                 ]
             );
         } catch (Exception $ex) {
-            exit($ex->getMessage());
+            include "../app/views/error.php";
+            //echo $ex->getMessage();
+            exit();
         }
     }
 
